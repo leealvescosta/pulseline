@@ -24,6 +24,6 @@
     <text x="16" y="450" font-size="11" fill="#6a6a6a">OpenAI Codex CLI · built-in items set up by the installer (illustrative)</text>
     <text x="16" y="476" fill="#808080">› <tspan fill="#e6e6e6">Ask Codex to do anything</tspan></text>
     <text x="16" y="502"><tspan fill="#c792ea">gpt-5.5 high</tspan><tspan fill="#808080"> · </tspan>~/my-project<tspan fill="#808080"> · </tspan><tspan fill="#4ce660">main</tspan><tspan fill="#808080"> · </tspan>42% context used<tspan fill="#808080"> · </tspan>5h limit 30%<tspan fill="#808080"> · </tspan>weekly limit 75%</text>
-    <text x="16" y="546" font-size="11" fill="#6a6a6a">green &lt; 70%   ·   yellow 70–89%   ·   red ≥ 90%</text>
+    <text x="16" y="546" font-size="11" fill="#6a6a6a">green &lt; 70%   ·   yellow 70 to 89%   ·   red ≥ 90%</text>
   </g>
 </svg>

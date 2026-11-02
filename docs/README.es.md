@@ -2,62 +2,61 @@
 
 [English](../README.md) · [Português](README.pt-BR.md) · **Español** · [日本語](README.ja.md) · [简体中文](README.zh-CN.md) · [한국어](README.ko.md)
 
-Una línea de estado colorida y que se adapta al ancho de la terminal para CLIs de programación con IA: modelo, carpeta, rama de git, ventana de contexto, límites de uso, temporizador de la caché de prompts, coste de la sesión y líneas modificadas.
+Pulseline es una línea de estado colorida para herramientas de programación con IA en la terminal. Muestra el modelo, la carpeta y la rama de git, cuánto se ha llenado la ventana de contexto, cuánto has gastado de tus límites de uso, cuándo se enfría la caché de prompts, cuánto ha costado la sesión y cuántas líneas has cambiado. Se adapta al ancho de la terminal.
 
 | Herramienta | Soporte |
 |---|---|
-| [Claude Code](https://claude.com/claude-code) | Completo: ejecuta el script de Pulseline |
-| [GitHub Copilot CLI](https://github.com/github/copilot-cli) | Ejecuta el script de Pulseline (la línea de estado personalizada es una función experimental de Copilot) |
-| [OpenAI Codex CLI](https://github.com/openai/codex) | Codex no puede ejecutar scripts personalizados, así que el instalador activa sus elementos integrados más parecidos |
+| [Claude Code](https://claude.com/claude-code) | Soporte completo. Ejecuta el script de Pulseline. |
+| [GitHub Copilot CLI](https://github.com/github/copilot-cli) | Ejecuta el script de Pulseline. Las líneas de estado personalizadas siguen siendo una función experimental de Copilot. |
+| [OpenAI Codex CLI](https://github.com/openai/codex) | Codex no puede ejecutar scripts personalizados, así que el instalador activa sus elementos integrados más parecidos. |
 
 ![Vista previa de Pulseline](../assets/pulseline-preview.png)
 <sub>De arriba abajo: Claude Code en una terminal ancha, en una estrecha, con <code>PULSELINE_NO_EMOJI</code> + <code>PULSELINE_HIDE</code>, y luego GitHub Copilot CLI y OpenAI Codex CLI. <a href="../assets/pulseline-preview.svg">Versión vectorial (SVG)</a>.</sub>
 
-## Características
+## Qué muestra
 
 | Segmento | Qué muestra |
 |---|---|
-| 🤖 model · 📁 folder · 🌿 branch | Modelo actual, carpeta de trabajo y rama de git |
-| 👾 `@agent` · `INSERT` | Subagente activo y modo vim (Claude Code, solo cuando existen) |
-| 🧠 context | Uso de la ventana de contexto, como barra, porcentaje y tokens `used/total` |
-| 🕔 5h · 📅 7d | Límites de uso de la suscripción de Claude y el tiempo que falta para que cada uno se restablezca |
-| 💾 cache | Tiempo hasta que la caché de prompts se enfría, o `cold · 73k to rewrite` |
-| 💰 cost | Coste de la sesión en USD y tiempo total de la sesión |
+| 🤖 modelo · 📁 carpeta · 🌿 rama | El modelo actual, la carpeta de trabajo y la rama de git |
+| 👾 `@agent` · `INSERT` | El subagente activo y el modo de vim (en Claude Code, cuando se usan) |
+| 🧠 contexto | Cuánto de la ventana de contexto está en uso, como barra, porcentaje y tokens `used/total` |
+| 🕔 5h · 📅 7d | Los límites de tu suscripción de Claude y cuánto falta para que se reinicie cada uno |
+| 💾 caché | Cuánto falta para que la caché de prompts se enfríe, o `cold · 73k to rewrite` una vez que se ha enfriado |
+| 💰 coste | Cuánto ha costado la sesión en USD y cuánto tiempo lleva en marcha |
 | 🎫 premium | Solicitudes premium usadas en la sesión (Copilot CLI) |
 | 📝 +/- | Líneas añadidas y eliminadas en esta sesión |
 
-- **Colores:** verde por debajo del 70 %, amarillo del 70 al 89 %, rojo a partir del 90 %.
-- **Se ajusta a cualquier ancho:** los segmentos pasan a una nueva línea a medida que la ventana se estrecha. Si aun así no caben en dos líneas, se ocultan primero las barras y después las horas de restablecimiento.
-- **Solo lo que está disponible:** un segmento que la herramienta no informa (por ejemplo, los límites de uso con una clave de API) simplemente se omite.
-- **Dos versiones equivalentes:** `pulseline.py` (Python 3, sin paquetes) y `pulseline.sh` (bash + jq). Las dos imprimen lo mismo.
+Los números se ven en verde por debajo del 70%, en amarillo del 70 al 89% y en rojo a partir del 90%.
 
-## Instalación rápida (un clic)
+Cuando la ventana se estrecha, los segmentos pasan a una nueva línea. Si dos líneas siguen sin bastar, Pulseline oculta primero las barras y después las horas de reinicio.
 
-El instalador:
+Si una herramienta no informa de algún dato (los límites de uso cuando usas una clave de API, por ejemplo), ese segmento simplemente no aparece.
 
-1. **Detecta** cuáles de estas herramientas tienes (Claude Code, Copilot CLI y Codex CLI) y te dice lo que encontró.
-2. Instala el script una sola vez en `~/.pulseline/` (Windows: `C:\Users\<you>\.pulseline\`).
-3. Añade **solo** las claves de la línea de estado a la configuración de cada herramienta y conserva todo lo demás. Antes de cualquier cambio se guarda una copia de seguridad (`settings.json.bak-<date>`), y un archivo que no sea JSON válido no se toca.
+Hay dos versiones que imprimen exactamente lo mismo: `pulseline.py` solo necesita Python 3, y `pulseline.sh` necesita bash y jq.
 
-Volver a ejecutarlo es seguro: actualiza las mismas claves en lugar de crear duplicados.
+## Instalación rápida
+
+El instalador busca Claude Code, Copilot CLI y Codex CLI y te dice cuáles ha encontrado. Pone el script en `~/.pulseline/` (en Windows, `C:\Users\<you>\.pulseline\`) y luego añade la configuración de la línea de estado a cada herramienta, sin tocar el resto de tu configuración.
+
+Antes de cambiar un archivo, guarda una copia a su lado (`settings.json.bak-<date>`). Si un archivo no es JSON válido, no lo toca. Puedes volver a ejecutarlo cuando quieras; actualiza la misma configuración en lugar de añadirla dos veces.
 
 ### Windows
 
-**Lo más fácil:** descarga el repositorio ([Code → Download ZIP](https://github.com/leealvescosta/pulseline/archive/refs/heads/main.zip)), descomprímelo y haz doble clic en **`install-windows.cmd`**.
+Lo más fácil: descarga el proyecto ([Code → Download ZIP](https://github.com/leealvescosta/pulseline/archive/refs/heads/main.zip)), descomprímelo y haz doble clic en `install-windows.cmd`.
 
-O pega esto en PowerShell:
+También puedes pegar esto en PowerShell:
 
 ```powershell
 irm https://raw.githubusercontent.com/leealvescosta/pulseline/main/install.ps1 | iex
 ```
 
-Si falta Python 3, el instalador ofrece instalarlo con `winget`.
+Si no tienes Python 3, el instalador se ofrece a instalarlo con `winget`.
 
 ### macOS
 
-**Lo más fácil:** descarga el ZIP, descomprímelo y haz doble clic en **`install-macos.command`**. La primera vez, macOS puede bloquearlo: haz clic derecho en el archivo → **Open** → **Open**.
+Lo más fácil: descarga el ZIP, descomprímelo y haz doble clic en `install-macos.command`. Puede que macOS lo bloquee la primera vez. Si pasa, haz clic derecho en el archivo, elige **Open** y luego **Open** otra vez.
 
-O pega esto en Terminal:
+También puedes pegar esto en Terminal:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/leealvescosta/pulseline/main/install.sh | bash
@@ -69,20 +68,20 @@ curl -fsSL https://raw.githubusercontent.com/leealvescosta/pulseline/main/instal
 curl -fsSL https://raw.githubusercontent.com/leealvescosta/pulseline/main/install.sh | bash
 ```
 
-Después, **reinicia tu herramienta** (Claude Code, Copilot CLI o Codex). La línea de estado aparece en la parte inferior de la terminal.
+Cuando termine, reinicia Claude Code, Copilot CLI o Codex. La línea de estado aparece en la parte de abajo de la terminal.
 
 ## Instalación manual
 
-### Antes de editar: las reglas que evitan la mayoría de los errores
+### Lee esto antes de editar
 
-Todos los archivos de configuración de esta sección son JSON. Estos son los errores que los rompen (o que hacen que la herramienta ignore tu línea de estado sin avisar):
+Todos estos archivos de configuración son JSON, y un pequeño error puede romper el archivo entero o hacer que la herramienta ignore tu línea de estado sin decir nada. Cuatro cosas que conviene tener en cuenta:
 
-1. **Combina, no reemplaces.** Tu `settings.json` probablemente ya tiene otras opciones. Añade el bloque `statusLine` junto a ellas; no pegues encima de todo el archivo.
-2. **`statusLine` va en el nivel superior**, como hijo directo de las `{ }` más externas. **No** debe ir dentro de otro bloque como `env`, `permissions` o `extraKnownMarketplaces`.
-3. **Las comas van entre elementos, nunca después del último.**
-4. **Revisa el archivo antes de reiniciar** (consulta [Valida tu settings.json](#valida-tu-settingsjson)).
+1. Seguramente tu `settings.json` ya tiene otros ajustes. Añade el bloque `statusLine` junto a ellos en lugar de pegar encima del archivo.
+2. `statusLine` tiene que estar en el nivel superior, directamente dentro de las `{ }` más externas. Si acaba dentro de otro bloque como `env`, `permissions` o `extraKnownMarketplaces`, no funcionará.
+3. Pon una coma entre elementos, pero no después del último.
+4. Revisa el archivo antes de reiniciar (mira [Revisa tu settings.json](#revisa-tu-settingsjson)).
 
-**Mal** — `statusLine` terminó dentro de `extraKnownMarketplaces`:
+Este es un error habitual. El bloque `statusLine` acabó dentro de `extraKnownMarketplaces`:
 
 ```jsonc
 {
@@ -96,19 +95,19 @@ Todos los archivos de configuración de esta sección son JSON. Estos son los er
 }
 ```
 
-Claude Code entonces interpreta `statusLine` como un marketplace de plugins, lo ignora y muestra esta advertencia:
+Entonces Claude Code cree que `statusLine` es un marketplace de plugins, lo ignora y muestra este aviso:
 
 ```
 Invalid marketplace entry was ignored: source: Invalid input: expected object, received undefined
 ```
 
-**Bien** — cierra primero el otro bloque y luego añade `statusLine` como su hermano:
+Para arreglarlo, cierra primero el otro bloque y añade `statusLine` después, al mismo nivel:
 
 ```jsonc
 {
   "extraKnownMarketplaces": {
     "my-plugins": { "source": { "source": "github", "repo": "me/plugins" } }
-  },                                      // ← cierra extraKnownMarketplaces y luego una coma
+  },                                      // ← cierra extraKnownMarketplaces, y luego una coma
   "statusLine": {                         // ✓ nivel superior
     "type": "command",
     "command": "python3 ~/.pulseline/pulseline.py"
@@ -116,11 +115,11 @@ Invalid marketplace entry was ignored: source: Invalid input: expected object, r
 }
 ```
 
-(Los comentarios `//` solo están para explicar; JSON no los admite, así que no los copies).
+Los comentarios `//` solo están para explicar. JSON no admite comentarios, así que no los pongas en tu archivo.
 
 ### Paso 1: copia el script
 
-Crea la carpeta `~/.pulseline/` (Windows: `C:\Users\<you>\.pulseline\`) y copia `pulseline.py` en ella. Usa `pulseline.sh` en su lugar si no tienes Python 3 pero sí `bash` y `jq`.
+Crea la carpeta `~/.pulseline/` (en Windows, `C:\Users\<you>\.pulseline\`) y copia `pulseline.py` dentro. Si no tienes Python 3 pero sí `bash` y `jq`, usa `pulseline.sh`.
 
 ### Paso 2: elige tu comando
 
@@ -130,15 +129,15 @@ Crea la carpeta `~/.pulseline/` (Windows: `C:\Users\<you>\.pulseline\`) y copia 
 | macOS / Linux, bash | `bash ~/.pulseline/pulseline.sh` |
 | Windows, Python | `python C:/Users/<you>/.pulseline/pulseline.py` |
 
-En Windows:
+Algunos consejos para Windows:
 
-- Usa **barras normales** (`C:/Users/...`). Las barras invertidas en JSON deben duplicarse (`C:\\Users\\...`), y olvidarlo es un error frecuente.
-- Usa la **ruta completa** en lugar de `~`, que no se expande en todas partes.
-- Si la ruta tiene espacios, ponla entre comillas dentro de la cadena: `"\"C:/Program Files/Python312/python.exe\" C:/Users/<you>/.pulseline/pulseline.py"`.
+- Usa barras normales (`C:/Users/...`). Las barras invertidas hay que duplicarlas en JSON (`C:\\Users\\...`), y es fácil olvidarse.
+- Escribe la ruta completa en lugar de `~`, porque `~` no se expande en todas partes.
+- Si la ruta tiene espacios, ponle comillas dentro de la cadena: `"\"C:/Program Files/Python312/python.exe\" C:/Users/<you>/.pulseline/pulseline.py"`.
 
 ### Paso 3a: Claude Code
 
-Archivo: `~/.claude/settings.json` (Windows: `C:\Users\<you>\.claude\settings.json`). Si no existe, créalo con `{}`. Añade:
+Abre `~/.claude/settings.json` (en Windows, `C:\Users\<you>\.claude\settings.json`). Si no existe, créalo con `{}` dentro. Luego añade:
 
 ```json
 {
@@ -151,7 +150,7 @@ Archivo: `~/.claude/settings.json` (Windows: `C:\Users\<you>\.claude\settings.js
 
 ### Paso 3b: GitHub Copilot CLI
 
-Archivo: `~/.copilot/settings.json` (o la carpeta indicada en `COPILOT_HOME`). La línea de estado personalizada de Copilot es experimental, así que también necesita la feature flag `STATUS_LINE`:
+Abre `~/.copilot/settings.json` (o la carpeta indicada en `COPILOT_HOME`). La línea de estado personalizada de Copilot sigue siendo experimental, así que también tienes que activar la feature flag `STATUS_LINE`:
 
 ```json
 {
@@ -165,26 +164,26 @@ Archivo: `~/.copilot/settings.json` (o la carpeta indicada en `COPILOT_HOME`). L
 }
 ```
 
-Si `feature_flags.enabled` ya existe, añade `"STATUS_LINE"` a esa lista en lugar de crear otra. También puedes iniciar Copilot con `copilot --experimental` o ejecutar `/experimental` dentro de él. Después reinicia Copilot (`/restart`): las flags se leen al arrancar.
+Si ya tienes una lista `feature_flags.enabled`, añade `"STATUS_LINE"` a ella en lugar de crear otra. También sirve iniciar Copilot con `copilot --experimental` o ejecutar `/experimental` dentro. Copilot lee las flags al arrancar, así que reinícialo después (`/restart`).
 
 ### Paso 3c: OpenAI Codex CLI
 
-Codex no ejecuta scripts personalizados. Añade sus elementos integrados a `~/.codex/config.toml` (TOML, no JSON):
+Codex no ejecuta scripts personalizados, pero puedes activar sus elementos integrados en `~/.codex/config.toml`. Este archivo es TOML, no JSON:
 
 ```toml
 [tui]
 status_line = ["model-with-reasoning", "current-dir", "git-branch", "context-used", "five-hour-limit", "weekly-limit"]
 ```
 
-Si el archivo ya tiene una sección `[tui]`, pon la línea `status_line` debajo de ella; no crees una segunda `[tui]`. También puedes elegir los elementos de forma interactiva con `/statusline` dentro de Codex.
+Si el archivo ya tiene una sección `[tui]`, pon la línea `status_line` debajo en lugar de añadir un segundo `[tui]`. También puedes elegir los elementos desde un menú con `/statusline` dentro de Codex.
 
 ### Paso 4: reinicia y comprueba
 
-Reinicia la herramienta. Si la línea de estado no aparece, consulta [Solución de problemas](#solución-de-problemas).
+Reinicia la herramienta. Si la línea de estado no aparece, echa un vistazo a [Solución de problemas](#solución-de-problemas).
 
-### Valida tu settings.json
+### Revisa tu settings.json
 
-Ejecuta esto antes de reiniciar. Si el archivo es válido, lo vuelve a imprimir; si no, muestra la línea y la columna del error:
+Ejecuta esto antes de reiniciar. Si el archivo es válido, lo vuelve a imprimir. Si no, te dice la línea y la columna del problema:
 
 ```bash
 python3 -m json.tool ~/.claude/settings.json            # macOS / Linux
@@ -194,7 +193,7 @@ python3 -m json.tool ~/.claude/settings.json            # macOS / Linux
 python -m json.tool $env:USERPROFILE\.claude\settings.json   # Windows
 ```
 
-Luego comprueba que `statusLine` esté en el nivel superior. Esto debe imprimir tu comando; si imprime `null`, el bloque está anidado en otro sitio:
+Después comprueba que `statusLine` está en el nivel superior. Esto debería imprimir tu comando. Si imprime `null`, el bloque está anidado dentro de otra cosa:
 
 ```bash
 python3 -c "import json,os; print(json.load(open(os.path.expanduser('~/.claude/settings.json'))).get('statusLine'))"
@@ -202,7 +201,7 @@ python3 -c "import json,os; print(json.load(open(os.path.expanduser('~/.claude/s
 
 ## Opciones
 
-Defínelas como variables de entorno. En Claude Code, el lugar más sencillo es el bloque `env` de `~/.claude/settings.json` (un bloque de nivel superior, como `statusLine`):
+Pulseline lee algunas variables de entorno. En Claude Code, el sitio más fácil para definirlas es el bloque `env` de `~/.claude/settings.json`, que también va en el nivel superior, como `statusLine`:
 
 ```json
 {
@@ -213,40 +212,40 @@ Defínelas como variables de entorno. En Claude Code, el lugar más sencillo es 
 }
 ```
 
-En Copilot CLI, defínelas en el perfil de tu shell (`export PULSELINE_HIDE=cost` en `~/.zshrc` / `~/.bashrc`, o `setx PULSELINE_HIDE cost` en Windows).
+En Copilot CLI, defínelas en el perfil de tu shell: `export PULSELINE_HIDE=cost` en `~/.zshrc` o `~/.bashrc`, o `setx PULSELINE_HIDE cost` en Windows.
 
-| Variable | Efecto |
+| Variable | Qué hace |
 |---|---|
-| `PULSELINE_HIDE` | Segmentos que ocultar, separados por comas: `branch`, `agent`, `vim`, `ctx`, `5h`, `7d`, `cache`, `cost`, `premium`, `diff` |
-| `PULSELINE_NO_EMOJI=1` | Etiquetas de texto en lugar de emojis (`ctx`, `5h`, `cost`…), para terminales o fuentes que no pueden mostrar emojis |
-| `PULSELINE_HOME` | Instalador: dónde colocar el script (por defecto `~/.pulseline`) |
-| `CLAUDE_CONFIG_DIR` / `COPILOT_HOME` / `CODEX_HOME` | Instalador: la carpeta de configuración de tu herramienta, si no está en la ubicación por defecto |
+| `PULSELINE_HIDE` | Oculta los segmentos que indiques, separados por comas: `branch`, `agent`, `vim`, `ctx`, `5h`, `7d`, `cache`, `cost`, `premium`, `diff` |
+| `PULSELINE_NO_EMOJI=1` | Muestra etiquetas de texto (`ctx`, `5h`, `cost`…) en lugar de emojis, para terminales o fuentes que no pueden mostrarlos |
+| `PULSELINE_HOME` | Le dice al instalador dónde poner el script (por defecto `~/.pulseline`) |
+| `CLAUDE_CONFIG_DIR` / `COPILOT_HOME` / `CODEX_HOME` | Le dice al instalador dónde guarda tu herramienta su configuración, si la has movido |
 
-## Sobre el indicador de caché
+## Cómo funciona el temporizador de la caché
 
-`💾 cache 47m of 1h` es el tiempo que queda antes de que caduque la caché de prompts de la conversación, junto con el TTL en uso. Se vuelve amarillo cuando queda menos del 20 % del TTL y muestra `cold` en rojo cuando caduca, con cuántos tokens volverá a escribir en la caché el siguiente mensaje.
+`💾 cache 47m of 1h` significa que la caché de prompts de la conversación caduca en 47 minutos, de una duración total de 1 hora. El número se pone amarillo cuando queda menos del 20% de ese tiempo. Cuando la caché caduca, verás `cold` en rojo, junto con cuántos tokens tendrá que volver a escribir en la caché tu siguiente mensaje.
 
-Claude Code elige el TTL en cada solicitud: **1 hora** con una suscripción de Claude dentro del uso del plan, y **5 minutos** con uso adicional, una clave de API o un proveedor en la nube, o cuando se define `FORCE_PROMPT_CACHING_5M=1` / `promptCacheTtl: "5m"`. Escribir en la caché de 5 minutos cuesta 1,25× el precio de entrada y en la de 1 hora, 2×; las lecturas de caché cuestan 0,1× o menos. Consulta [How Claude Code uses prompt caching](https://code.claude.com/docs/en/prompt-caching#cache-lifetime).
+Claude Code elige la duración de la caché en cada solicitud. Tienes 1 hora con una suscripción de Claude mientras estés dentro del uso de tu plan. Tienes 5 minutos con uso adicional, con una clave de API o un proveedor en la nube, o cuando defines `FORCE_PROMPT_CACHING_5M=1` o `promptCacheTtl: "5m"`. Escribir en la caché de 5 minutos cuesta 1,25× el precio de entrada y escribir en la de 1 hora cuesta 2×; leer de la caché cuesta 0,1× o menos. Tienes los detalles en [How Claude Code uses prompt caching](https://code.claude.com/docs/en/prompt-caching#cache-lifetime).
 
-El script lee los datos `prompt_cache` del propio Claude Code (v2.1.251+); en versiones anteriores, hace una estimación a partir de la transcripción de la sesión. Este segmento es exclusivo de Claude Code.
+Pulseline usa los datos de `prompt_cache` que envía Claude Code (versión 2.1.251 y posteriores). En versiones anteriores estima el temporizador a partir de la transcripción de la sesión. Este segmento solo aparece en Claude Code.
 
 ## Solución de problemas
 
 | Síntoma | Solución |
 |---|---|
-| Advertencia `Invalid marketplace entry was ignored ... statusLine` | `statusLine` está anidado dentro de `extraKnownMarketplaces`. Muévelo al nivel superior ([ver arriba](#antes-de-editar-las-reglas-que-evitan-la-mayoría-de-los-errores)). |
-| La herramienta dice que settings.json no es válido, o ignora toda tu configuración | Hay una coma o una llave mal puesta. [Valida el archivo](#valida-tu-settingsjson); el error indica la línea. |
-| La línea de estado no aparece y no hay ningún error | Ejecuta el script a mano: `echo '{}' \| python3 ~/.pulseline/pulseline.py`. Debería imprimir dos líneas. Si lo hace, probablemente `statusLine` está anidado: comprueba que esté en el nivel superior. |
-| Copilot CLI no muestra nada | Comprueba la feature flag `STATUS_LINE` (o inicia con `--experimental`) y reinicia Copilot. |
-| `jq: command not found` | Instala `jq` o cambia a la versión de Python. |
-| Windows: `python` abre la Microsoft Store | Instala Python desde [python.org](https://www.python.org/downloads/) (marca *Add python.exe to PATH*) y vuelve a ejecutar el instalador. |
-| Cuadrados en lugar de emojis | Define `PULSELINE_NO_EMOJI=1` o usa una fuente compatible con emojis. |
-| Rompiste settings.json y quieres recuperarlo | Cada ejecución del instalador guarda un `settings.json.bak-<date>` junto a él. |
+| Aviso `Invalid marketplace entry was ignored ... statusLine` | `statusLine` está dentro de `extraKnownMarketplaces`. Muévelo al nivel superior ([mira el ejemplo de arriba](#lee-esto-antes-de-editar)). |
+| La herramienta dice que settings.json no es válido, o ignora toda tu configuración | Hay una coma o una llave mal puesta. [Revisa el archivo](#revisa-tu-settingsjson) y te mostrará la línea. |
+| La línea de estado no aparece y no hay ningún error | Ejecuta el script tú mismo: `echo '{}' \| python3 ~/.pulseline/pulseline.py`. Deberías ver dos líneas. Si las ves, seguramente `statusLine` está anidado dentro de otro bloque, así que comprueba que esté en el nivel superior. |
+| Copilot CLI no muestra nada | Asegúrate de que la feature flag `STATUS_LINE` está activada (o inicia Copilot con `--experimental`) y reinícialo. |
+| `jq: command not found` | Instala `jq` o usa la versión de Python. |
+| En Windows, `python` abre Microsoft Store | Instala Python desde [python.org](https://www.python.org/downloads/), marca *Add python.exe to PATH* y vuelve a ejecutar el instalador. |
+| Ves cuadrados en lugar de emojis | Define `PULSELINE_NO_EMOJI=1` o cambia a una fuente que tenga emojis. |
+| Has roto settings.json y quieres recuperar el anterior | Cada vez que se ejecuta el instalador, guarda una copia `settings.json.bak-<date>` junto al archivo. |
 
 ## Desinstalación
 
-1. Elimina el bloque `statusLine` de `~/.claude/settings.json` y/o de `~/.copilot/settings.json` (y `STATUS_LINE` de `feature_flags.enabled` de Copilot si no lo usas para nada más).
-2. En Codex, elimina la línea `status_line` de `~/.codex/config.toml`.
+1. Quita el bloque `statusLine` de `~/.claude/settings.json` y/o `~/.copilot/settings.json`. En Copilot también puedes quitar `STATUS_LINE` de `feature_flags.enabled` si nada más lo necesita.
+2. En Codex, borra la línea `status_line` de `~/.codex/config.toml`.
 3. Borra la carpeta `~/.pulseline/` y reinicia tus herramientas.
 
 ## Licencia

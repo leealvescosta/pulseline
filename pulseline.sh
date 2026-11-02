@@ -1,5 +1,5 @@
 #!/bin/bash
-# Pulseline — Claude Code status line: model + dir + branch, then context, 5h/7d rate limits and prompt-cache warmth.
+# Pulseline, a status line for Claude Code and Copilot CLI: model + dir + branch, then context, 5h/7d rate limits and prompt-cache warmth.
 # Output fits the terminal width (COLUMNS): segments wrap onto new lines, and details drop only when wrapping is not enough.
 
 input=$(cat)
